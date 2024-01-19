@@ -8,7 +8,6 @@ class SymbolTableException(Exception):
         message = "Symbol table error on line: " + str(lineno) + "\nUndeclared ID: " + ID
         super().__init__(message)    
 
-#Implement all members of this class for Part 3
 class SymbolTable:
     #create list of hash table
     def __init__(self) -> None:
@@ -43,11 +42,6 @@ class Parser:
         #if -s is added create Symbol Table object to the Parser and add boolean
         if self.useSymbol:
             self.ST = SymbolTable()
-        
-
-    # Implement one function in this class for every non-terminal in
-    # your grammar using the recursive descent recipe from the book
-    # and the lectures for part 2
 
     #simple function checking if current token is expected if so move to next token else throw error
     def match(self, token):
@@ -55,12 +49,6 @@ class Parser:
             self.peek = self.scanner.token()
         else:
             raise ParserException(self.scanner.get_lineno(), self.peek, [token])
-
-    
-
-    #every non terminal in the grammar is defined below checking for expected tokens and matching at every step to
-    #move through the tokens
-    #every definition is an if statement and if none match it raise error
 
     def parse(self, s:str):
         self.scanner.input_string(s)
