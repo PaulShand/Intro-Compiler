@@ -1,0 +1,69 @@
+OP Tokens
+ ID //copy of hw1
+ NUM //copy of hw1
+ PLUS +
+ MULT *
+ SEMI ;
+ LPAREN (
+ RPAREN )
+ LBRACE {
+ RBRACE }
+ ASSIGN =
+ SUB = -
+ DIV = /
+ EQUAL ==
+ LESS <
+ END return once string length less than 0
+
+keywords = {FOR, IF, ELSE, INT, FLOAT}
+      
+grammar with first+ sets in {}
+
+statement_list := statement statement_list {INT, FLOAT, ID, IF, LBRACE, FOR}  
+               |  END {END}
+               |  ""   {RBRACE}
+
+statement := declaration_statement  {INT, FLOAT}
+          |  assignment_statement   {ID}
+          |  if_else_statement      {IF}
+          |  block_statement        {LBRACE}
+          |  for_loop_statement     {FOR}
+
+declaration_statement  := INT ID SEMI   {INT} 
+                       |  FLOAT ID SEMI {FLOAT} 
+
+assignment_statement := assignment_statement_base SEMI {ID}
+
+assignment_statement_base := ID ASSIGN expr {ID}
+
+if_else_statement := IF LPAREN expr RPAREN statement ELSE statement {IF}
+
+block_statement := LBRACE statement_list RBRACE {LBRACE}
+
+for_loop_statement := FOR LPAREN assignment_statement expr SEMI assignment_statement_base RPAREN statement {FOR}
+
+expr := comp expr2        {NUM, ID, LPAREN}
+
+expr2 := EQUAL comp expr2    {EQUAL}
+      | ""                {SEMI, RPAREN}
+
+comp := factor comp2      {NUM, ID, LPAREN} 
+
+comp2 := LESS factor comp2  {LESS} 
+      | ""                {SEMI, RPAREN, EQUAL}
+
+factor := term factor2         {NUM, ID, LPAREN} 
+
+factor2 := PLUS term factor2   {PLUS}
+        | SUB  term factor2  {SUB}
+        | ""                   {SEMI, RPAREN, EQUAL, LESS}
+
+term := unit term2        {NUM, ID, LPAREN} 
+
+term2 := DIV unit term2   {DIV}
+      | MULT  unit term2   {MULT}
+      | ""                {SEMI, RPAREN, EQUAL, LESS, PLUS, SUB}
+
+unit := NUM {NUM}
+     |  ID  {ID} 
+     |  LPAREN expr RPAREN {LPAREN} 
