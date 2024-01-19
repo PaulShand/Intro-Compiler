@@ -55,14 +55,6 @@ class Scanner:
     # Get the scanner line number, needed for the parser exception
     def get_lineno(self)->int:
         return self.lineno
-
-
-    # Implement me with one of your scanner implementations for part
-    # 2. I suggest the SOS implementation. If you are not comfortable
-    # using one of your own scanner implementations, you can use the
-    # EMScanner implementation
-
-    #implemented SOS scanner from lab 1
     def token(self) -> Optional[Lexeme]:
         # Loop until we find a token we can
         # return (or until the string is empty)
@@ -91,10 +83,7 @@ class Scanner:
                             
             if len(matches) == 0:
                 #add lineno to the scanner error
-                raise ScannerException(self.lineno)
-            
-            # since we are exact matching on the substring, we can
-            # arbitrarily take the first match as the longest one         
+                raise ScannerException(self.lineno)     
             
             longest = matches[0]
             topLength = len(matches[0][1].group())
@@ -107,17 +96,11 @@ class Scanner:
             # apply the token action
             ret = longest[2](self, Lexeme(longest[0],longest[1][0]))
 
-            # figure how much we need to chop from our input string
-
             chop = len(ret.value)
             self.istring = self.istring[chop:]
 
-            # if we did not match an IGNORE token, then we can
-            # return the lexeme
             if ret.token != Token.IGNORE:
                 return ret
-
-#added scanner object to functions to update counter scanner
 
 def idy(scanner: Scanner, l:Lexeme) -> Lexeme:
     return l
